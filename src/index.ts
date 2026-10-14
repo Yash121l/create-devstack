@@ -16,6 +16,11 @@ export interface CreateDevstackInput {
   options: CliOptions
 }
 
+export interface CreateDevstackResult {
+  selectedModules: string[]
+  packageManager: string
+}
+
 interface ProjectTarget {
   projectName: string
   projectDir: string
@@ -132,7 +137,7 @@ async function resolveProjectTarget(
   }
 }
 
-export async function runCreateDevstack(input: CreateDevstackInput): Promise<void> {
+export async function runCreateDevstack(input: CreateDevstackInput): Promise<CreateDevstackResult> {
   const options = cliOptionSchema.parse(input.options)
   const logger = new ConsoleLogger(false)
 
@@ -176,4 +181,6 @@ export async function runCreateDevstack(input: CreateDevstackInput): Promise<voi
     options,
     logger
   })
+
+  return { selectedModules, packageManager }
 }

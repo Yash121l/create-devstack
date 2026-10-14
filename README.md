@@ -43,6 +43,18 @@ create-devstack my-app --advanced
 create-devstack my-app --yes
 ```
 
+## Telemetry
+
+Each run sends one anonymous `cli_command_run` event so the maintainer can see which modules people pick and how often runs fail. It contains the create-devstack version, OS, CPU architecture, Node version, duration, exit code, which flags were passed (booleans only), the selected module ids, and the detected package manager. It is keyed by a random id stored in `~/.config/create-devstack/telemetry.json`. Project names, paths, file contents and option values are never sent. The first run prints a notice.
+
+The event is sent to PostHog from a detached background process, so it never slows down or blocks the CLI. Telemetry is off in CI (`CI` set). To turn it off:
+
+```bash
+export CREATE_DEVSTACK_TELEMETRY=0
+# or
+export DO_NOT_TRACK=1
+```
+
 ## Architecture
 
 The CLI uses a composition engine in `src/core`:
